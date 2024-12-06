@@ -11,9 +11,10 @@ namespace Labirint
     public partial class FormGame : Form
     {
         char[,] field;
-        Image fon, stone, steve;
+        Image fon, stone, steve, enemy;
         int x = 1, y = 1;
-
+        int enemyX = 7, enemyY = 1;
+        Random rnd = new Random();
 
         char[,] LoadLevelFromFile(string filename)
         {
@@ -33,7 +34,44 @@ namespace Labirint
             return data;
         }
 
-        void ShowField(char[,] data)
+        bool CheckCellField(int x, int y)
+        {
+            int row = y;
+            int col = x;
+            if (0 <= row && row < field.GetLength(0) && 0 <= col && col < field.GetLength(1))
+                return field[row, col] == '0';
+            return false;
+        }
+        void ShowMoveGame()
+        {
+            ShowField(field);
+            dataGridViewLabirint[x, y].Value = steve;
+            dataGridViewLabirint[enemyX, enemyY].Value = enemy;
+
+        }
+
+        private void timerEnemy_Tick(object sender, EventArgs e)
+        {
+            int direct = rnd.Next(4);
+             switch (direct)
+            {
+                //влево
+                case 0: 
+                   if (CheckCellField(enemyX - 1, enemyY)) enemyX -= 1; break;
+                // вверх
+                case 1:
+                    if (CheckCellField(enemyX, enemyY - 1)) enemyY -= 1; break;
+                //вправо
+                case 2:
+                    if (CheckCellField(enemyX + 1, enemyY)) enemyX += 1; break;
+                //вниз
+                case 3:
+                    if (CheckCellField(enemyX, enemyY + 1)) enemyY += 1; break;
+            }
+            ShowMoveGame();
+        }
+
+        void CreateField(char[,] data)
         {
             int widthColumn = 60;
 
@@ -46,23 +84,55 @@ namespace Labirint
             this.Width = dataGridViewLabirint.Width;
             this.Height = dataGridViewLabirint.Height;
 
-            
-            
-
             for (int i = 0; i < data.GetLength(1); i++)
             {
-               var column = new DataGridViewImageColumn();
+                var column = new DataGridViewImageColumn();
                 column.Width = widthColumn;
                 column.ImageLayout = DataGridViewImageCellLayout.Stretch;
                 dataGridViewLabirint.Columns.Add(column);
             }
 
             dataGridViewLabirint.RowCount = data.GetLength(0);
+        }
 
+        private void FormGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down)
+            {
+                if (CheckCellField(x, y + 1))
+                {
+                    y += 1;
+                }
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                if (CheckCellField(x, y - 1))
+                {
+                    y -= 1;
+                }
+            }
+            if (e.KeyCode == Keys.Left)
+            {
+                if (CheckCellField(x - 1, y))
+                {
+                    x -= 1;
+                }
+            }
+            if (e.KeyCode == Keys.Right)
+            {
+                if (CheckCellField(x + 1, y))
+                {
+                    x += 1;
+                    
+                }
+            }
+            ShowMoveGame();
+        }
 
-            
-
-            for (int i = 0; i < data.GetLength(0); i++)
+        void ShowField(char[,] data)
+        {
+           
+           for (int i = 0; i < data.GetLength(0); i++)
             {
                 for (int j = 0; j < data.GetLength(1); j++)
                 {
@@ -74,7 +144,6 @@ namespace Labirint
                             dataGridViewLabirint.Rows[i].Cells[j].Value = fon; break;
                             //dataGridViewLabirint[x, y].Value = fon; 
                     }
-
                 }
             }
         }
@@ -89,12 +158,12 @@ namespace Labirint
             fon = Bitmap.FromFile("images/fon.jpg");
             stone = Bitmap.FromFile("images/stone.jpg");
             steve = Bitmap.FromFile("images/Steve.jpg");
+            enemy = Bitmap.FromFile("images/enemy.png");
 
             field = LoadLevelFromFile("levels/level1.txt");
-            
 
-            ShowField(field);
-            dataGridViewLabirint[x, y].Value = steve;
+            CreateField(field);
+            ShowMoveGame();
         }
     }
 }
