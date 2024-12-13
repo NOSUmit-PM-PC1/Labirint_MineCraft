@@ -15,6 +15,7 @@ namespace Labirint
         int x = 1, y = 1;
         int enemyX = 7, enemyY = 1;
         Random rnd = new Random();
+        int level = 2;
 
         char[,] LoadLevelFromFile(string filename)
         {
@@ -42,18 +43,18 @@ namespace Labirint
                 return field[row, col] == '0';
             return false;
         }
+
         void ShowMoveGame()
         {
             ShowField(field);
             dataGridViewLabirint[x, y].Value = steve;
             dataGridViewLabirint[enemyX, enemyY].Value = enemy;
-
         }
 
         private void timerEnemy_Tick(object sender, EventArgs e)
         {
             int direct = rnd.Next(4);
-             switch (direct)
+            switch (direct)
             {
                 //влево
                 case 0: 
@@ -123,7 +124,6 @@ namespace Labirint
                 if (CheckCellField(x + 1, y))
                 {
                     x += 1;
-                    
                 }
             }
             ShowMoveGame();
@@ -151,6 +151,7 @@ namespace Labirint
         public FormGame()
         {
             InitializeComponent();
+
         }
 
         private void FormGame_Load(object sender, EventArgs e)
@@ -160,7 +161,7 @@ namespace Labirint
             steve = Bitmap.FromFile("images/Steve.jpg");
             enemy = Bitmap.FromFile("images/enemy.png");
 
-            field = LoadLevelFromFile("levels/level1.txt");
+            field = LoadLevelFromFile("levels/level" + level + ".txt");
 
             CreateField(field);
             ShowMoveGame();
