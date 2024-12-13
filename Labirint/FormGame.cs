@@ -15,7 +15,8 @@ namespace Labirint
         int x = 1, y = 1;
         int enemyX = 7, enemyY = 1;
         Random rnd = new Random();
-        int level = 2;
+        int level = 1;
+        int step = 0;
 
         char[,] LoadLevelFromFile(string filename)
         {
@@ -127,6 +128,19 @@ namespace Labirint
                 }
             }
             ShowMoveGame();
+            step++;
+            this.Text = x + " " + y;
+            if (y == 1 && x == field.GetLength(1) - 1)
+            {
+                FormEnterUserName formEnterUserName = new FormEnterUserName();
+                formEnterUserName.level = this.level;
+                formEnterUserName.steps = step;
+                formEnterUserName.ShowDialog();
+                level++;
+                field = LoadLevelFromFile("levels/level" + level + ".txt");
+                CreateField(field);
+                ShowMoveGame();
+            }
         }
 
         void ShowField(char[,] data)

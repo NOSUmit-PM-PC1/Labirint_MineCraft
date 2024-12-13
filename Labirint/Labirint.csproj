@@ -46,16 +46,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormEnterUserName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEnterUserName.Designer.cs">
+      <DependentUpon>FormEnterUserName.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormGame.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormGame.Designer.cs">
       <DependentUpon>FormGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormScoreAllUsers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormScoreAllUsers.Designer.cs">
+      <DependentUpon>FormScoreAllUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormEnterUserName.resx">
+      <DependentUpon>FormEnterUserName.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormGame.resx">
       <DependentUpon>FormGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormScoreAllUsers.resx">
+      <DependentUpon>FormScoreAllUsers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
